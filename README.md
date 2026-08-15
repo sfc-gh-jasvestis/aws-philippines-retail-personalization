@@ -9,7 +9,6 @@ Philippine retail is a ₱4.2 trillion market where consumers are mobile-first, 
 ```mermaid
 flowchart LR
     KIN[Kinesis] --> SPS[Snowpipe Streaming]
-    SP --> RAW[RAW Tables]
     SPS --> RAW
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
