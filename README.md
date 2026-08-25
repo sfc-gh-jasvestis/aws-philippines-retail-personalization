@@ -120,7 +120,7 @@ Industry research and Snowflake customer outcomes:
 - **ML-powered personalization improves campaign conversion 2-4x vs segment-based** — [McKinsey Marketing](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights)
 - **Reducing churn by 5% increases profits 25-95% in retail** — [Bain & Company](https://www.bain.com/insights/the-value-of-online-customer-loyalty/)
 - **Filipino consumers rank loyalty programs as #2 purchase decision factor after price** — [Nielsen Philippines](https://www.nielsen.com/apac/en/insights/)
-
+- **Instacart** (Snowflake customer): serves 1.4B+ data points daily on Snowflake for real-time personalization across 80K+ retail locations -- [snowflake.com/customers/instacart](https://www.snowflake.com/en/customers/all-customers/case-study/instacart/)
 
 ## Key Demo Numbers
 
