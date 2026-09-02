@@ -1,16 +1,13 @@
--- ============================================================================
--- Consumer Insights & Personalization Engine
--- 110M Filipino internet users, price-sensitive and mobile-first — Snowflake builds consumer profiles with ML.CLASSIFICATION, generates personalized offers via Cortex Complete, and delivers through SES at scale.
--- ============================================================================
-USE ROLE ACCOUNTADMIN;
-CREATE DATABASE IF NOT EXISTS CONSUMER_INSIGHTS;
-CREATE WAREHOUSE IF NOT EXISTS CONSUMER_WH WAREHOUSE_SIZE = 'MEDIUM' AUTO_SUSPEND = 120 AUTO_RESUME = TRUE;
-USE DATABASE CONSUMER_INSIGHTS;
-CREATE SCHEMA IF NOT EXISTS RAW;
-CREATE SCHEMA IF NOT EXISTS CURATED;
-CREATE SCHEMA IF NOT EXISTS ML;
-CREATE SCHEMA IF NOT EXISTS AI;
-CREATE SCHEMA IF NOT EXISTS SEARCH;
-CREATE SCHEMA IF NOT EXISTS APP;
+-- Generated from generator/demo_specs/aws-philippines-retail-personalization.json
+-- Regenerate with: python3 generator/gen_repo_docs.py aws-philippines-retail-personalization
+-- This is the schema that is actually deployed for PH_RETAIL_PERSONALIZATION.
 
-USE WAREHOUSE CONSUMER_WH;
+-- PH_RETAIL_PERSONALIZATION  (Consumer Insights & Personalization Engine)
+-- generated from generator/demo_specs/aws-philippines-retail-personalization.json - do not hand-edit
+CREATE DATABASE IF NOT EXISTS PH_RETAIL_PERSONALIZATION;
+CREATE SCHEMA IF NOT EXISTS PH_RETAIL_PERSONALIZATION.RAW;
+CREATE SCHEMA IF NOT EXISTS PH_RETAIL_PERSONALIZATION.CURATED;
+CREATE SCHEMA IF NOT EXISTS PH_RETAIL_PERSONALIZATION.APP;
+USE DATABASE PH_RETAIL_PERSONALIZATION;
+
+-- 5 real regions; entity names carry their region so the two always agree
