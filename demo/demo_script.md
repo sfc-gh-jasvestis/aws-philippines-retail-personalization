@@ -1,108 +1,81 @@
-# Demo Script: Consumer Insights & Personalization Engine
-## ~4-Minute Recorded Walkthrough
-**Format**: Screen recording with voiceover
-**Target**: Customer meeting / booth loop / social share
-**Narrative**: "Snowflake ingests consumer behavior from Kinesis, classifies purchase intent with ML.CLASSIFICATION, generates personalized content via Cortex Complete, and delivers offers through SES — replacing Amazon Personalize with native capabilities"
-**Demo Mode**: Open app with `?demo=true` for presenter notes
+# Consumer Insights & Personalization Engine
 
----
+**Philippines - Retail & E-Commerce**
+Use case: Consumer Personalization
 
-## Two Personas
+> 110M Filipino internet users, price-sensitive and mobile-first — Snowflake builds consumer profiles with ML.CLASSIFICATION, generates personalized offers via Cortex Complete, and delivers through SES at scale.
 
-| Persona | Role | Tool | What they care about |
-|---|---|---|---|
-| **Clarissa Joy Tan-Cojuangco** | VP Marketing & CRM | React App (SPCS) | Customer lifetime value, campaign ROI, churn prevention, segment performance |
-| **Dennis Patrick Soriano** | Personalization Engineer | Amazon QuickSight | Recommendation accuracy, A/B test results, model performance, feature engineering |
+## Why Snowflake
 
----
+Snowflake ingests consumer behavior from Kinesis, classifies purchase intent with ML.CLASSIFICATION, generates personalized content via Cortex Complete, and delivers offers through SES — replacing Amazon Personalize with native capabilities
 
-## What's Built
+- **ML.CLASSIFICATION for purchase intent + churn** - Dual classification models — intent AND churn — on same Customer 360 table
+- **Cortex Complete for marketing copy generation** - LLM generates personalized email/SMS at scale — replaces Personalize
+- **SES notification delivery** - End-to-end: score → generate → deliver via email/SMS notification integration
+- **45M browse events ingested via Kinesis** - Production-scale behavioral data ingestion and processing
+- **Philippine retail consumer context** - ₱4.2T market with mobile-first, loyalty-driven Filipino shoppers
 
-| Layer | Component | Detail |
+## What is deployed
+
+| | |
+|---|---|
+| Database | `PH_RETAIL_PERSONALIZATION` |
+| Service | `PH_RETAIL_PERSONALIZATION_APP` |
+| Compute pool | `SEA_DEMOS_PHILIPPINES_POOL` |
+| Dimension table | `RAW.PRODUCT_CATALOG` (20 rows) |
+| Fact table | `RAW.BROWSE_EVENTS` (250,000 rows, 90 days) |
+| Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
+| Currency | PHP (₱) |
+
+Regions in play: Metro Manila, Cebu, Davao, Pampanga, Iloilo
+Segments: Mass Market, Young Professional, Family Shopper, Premium
+
+Dynamic tables are created suspended and refreshed on demand:
+
+```bash
+./refresh_demo_data.sh PH_RETAIL_PERSONALIZATION
+```
+
+## KPI cards
+
+Every card below is served live from `CURATED.KPI_SUMMARY`. The app keeps the
+original literal as a fallback, so it still renders if Snowflake is unreachable.
+
+| Card | Value | Backed by |
 |---|---|---|
-| **RAW** | 6 tables | CUSTOMERS (2800000), BROWSE_EVENTS (45000000), PURCHASE_HISTORY (8500000), CAMPAIGN_RESPONSES (12000000), PRODUCT_CATALOG (85000), LOYALTY_POINTS (1800000) |
-| **CURATED** | 4 Dynamic Tables | CUSTOMER_360, SEGMENT_PERFORMANCE, PRODUCT_AFFINITY, NEXT_BEST_OFFER |
-| **ML** | ML.CLASSIFICATION + ML.CLASSIFICATION | Forecasting + anomaly detection |
-| **AI** | COMPLETE, AI_CLASSIFY | Classification + extraction |
-| **Search** | Cortex Search | 85000 documents indexed |
-| **Agent** | PERSONALIZATION_AGENT | Semantic View + Search tools |
+| Recommendation CTR | `8.4%` | average per event |
+| Personalized Revenue | `₱1.2B` | total across Product Catalog |
+| A/B Tests Active | `14` | average per event |
+| Models Deployed | `8` | average per event |
+| Revenue Lift (Avg) | `+14%` | average per event |
+| Engagement Lift | `+22%` | average per event |
+| Test Velocity | `4/week` | average per event |
 
 
----
+## Demo flow
 
-## The Story
+1. Executive Cockpit
+2. Personalization
+3. Customer 360
+4. Ask AI
+5. Architecture & Data
 
-Philippine retail is a ₱4.2 trillion market where consumers are mobile-first, price-sensitive, and loyalty-driven. A leading omnichannel retailer with 2.8M customers sends 50M marketing messages monthly — but most are batch, segment-based, and irrelevant. ML-powered personalization with Cortex Complete generates individualized offers that convert 2.4x higher, protecting ₱8.4B in customer lifetime value.
+## Talking points
 
----
+- **2.8M customers** - active customer base with unified profiles
+- **₱8.4B** - CLV at risk from 342K churn-risk customers
+- **2.4x** - conversion lift from ML-personalized vs static campaigns
+- **45M events** - browse events ingested monthly via Kinesis
+- **₱24,500** - average customer lifetime value
+- **8.4% CTR** - for ML-personalized campaigns (vs 3.5% static)
 
-## Script
+## Business impact
 
-### [0:00–0:45] EXECUTIVE COCKPIT
-
-**Show**: Executive Cockpit tab
-
-> "2.8 million active customers — average CLV of ₱24,500 across all segments."
-
-**Action**: Point at 2.8M customers KPI
-
-### [0:45–1:30] PERSONALIZATION
-
-**Show**: Personalization tab
-
-> "ML.CLASSIFICATION predicts purchase intent for 2.8M customers — refreshed hourly."
-
-**Action**: Show prediction score distribution
-
-### [1:30–2:15] CUSTOMER 360
-
-**Show**: Customer 360 tab
-
-> "Five segments: VIP (top 5%), Loyal (20%), Active (35%), At-Risk (25%), Dormant (15%)."
-
-**Action**: Show segment pyramid with CLV
-
-### [2:15–3:00] ASK AI
-
-**Show**: Ask AI tab
-
-> "Clarissa asks: 'What's the best offer for at-risk VIP customers?'"
-
-**Action**: Type: 'Best offer for at-risk VIPs?'
-
-### [3:00–3:45] ARCHITECTURE & DATA
-
-**Show**: Architecture & Data tab
-
-> "Kinesis → Snowpipe → Customer 360 → ML scoring → Cortex Complete copy → SES delivery."
-
-**Action**: Walk through architecture diagram
-
+- Philippine retail market valued at ₱4.2 trillion with 8% digital commerce penetration (PSA Philippines)
+- ML-powered personalization improves campaign conversion 2-4x vs segment-based (McKinsey Marketing)
+- Reducing churn by 5% increases profits 25-95% in retail (Bain & Company)
+- Filipino consumers rank loyalty programs as #2 purchase decision factor after price (Nielsen Philippines)
 
 ---
-
-## Key Demo Differentiators
-
-1. **ML.CLASSIFICATION for purchase intent + churn** — Dual classification models — intent AND churn — on same Customer 360 table
-2. **Cortex Complete for marketing copy generation** — LLM generates personalized email/SMS at scale — replaces Personalize
-3. **SES notification delivery** — End-to-end: score → generate → deliver via email/SMS notification integration
-4. **45M browse events ingested via Kinesis** — Production-scale behavioral data ingestion and processing
-5. **Philippine retail consumer context** — ₱4.2T market with mobile-first, loyalty-driven Filipino shoppers
-
-
----
-
-## Demo Prep Checklist
-
-### Data Verification
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.RAW.BROWSE_EVENTS` → 45000000
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.RAW.CUSTOMERS` → 2800000
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.CURATED.CUSTOMER_360 WHERE CHURN_RISK_SCORE > 0.8` → ~342000
-
-### ML Model Verification
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.ML.PURCHASE_INTENT_RESULTS WHERE WILL_PURCHASE_7D = TRUE` → >0
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.ML.CHURN_RISK_RESULTS WHERE WILL_CHURN_30D = TRUE` → ~342000
-
-### AI/Agent Verification
-- [ ] `SELECT COUNT(*) FROM CONSUMER_INSIGHTS.AI.LIFECYCLE_CLASSIFICATION` → 2800000
-
+Generated from `generator/demo_specs/aws-philippines-retail-personalization.json`. Do not hand-edit: run
+`python3 generator/gen_repo_docs.py aws-philippines-retail-personalization` instead.
