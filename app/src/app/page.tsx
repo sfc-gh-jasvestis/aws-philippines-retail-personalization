@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="philippines"
+            labels={{ entity: 'Models', event: 'Browse Sessions', alert: 'Missed Offers' }}
             regions={data?.regions}
             markers={[{"label": "Manila", "value": "Core market: 84K sellers", "color": "blue", "size": "lg"}, {"label": "Cebu", "value": "Growing: 12K sellers", "color": "green", "size": "md"}, {"label": "Davao", "value": "Emerging: 4K sellers", "color": "amber", "size": "md"}]}
             routes={[]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Model' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Status' },
-          { key: 'value', header: 'Revenue Lift %' },
+          { key: 'm1', header: 'Revenue Lift %' },
+          { key: 'm2', header: 'A B Tests Active' },
+          { key: 'm3', header: 'Models Deployed' },
+          { key: 'events', header: 'Browse Sessions' },
+          { key: 'alerts', header: 'Missed Offers' },
         ]}
         data={data?.entities || []}
         title="Model Performance"
