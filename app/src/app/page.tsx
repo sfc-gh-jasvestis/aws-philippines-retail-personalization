@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="philippines"
+            regions={data?.regions}
             markers={[{"label": "Manila", "value": "Core market: 84K sellers", "color": "blue", "size": "lg"}, {"label": "Cebu", "value": "Growing: 12K sellers", "color": "green", "size": "md"}, {"label": "Davao", "value": "Emerging: 4K sellers", "color": "amber", "size": "md"}]}
             routes={[]}
             title="Geographic Overview"
@@ -70,7 +71,7 @@ export default function HomePage() {
           title="Recommendation Revenue (Weekly)"
         />
         <Chart
-          data={data?.categories || [{ category: 'North', count: 82 }, { category: 'Central', count: 74 }, { category: 'South', count: 91 }, { category: 'Highland', count: 68 }, { category: 'Coastal', count: 77 }]}
+          data={data?.categoryMetric || [{ category: 'North', count: 82 }, { category: 'Central', count: 74 }, { category: 'South', count: 91 }, { category: 'Highland', count: 68 }, { category: 'Coastal', count: 77 }]}
           type="bar"
           xKey="category"
           yKeys={[{ key: 'count', name: 'CTR %' }]}
