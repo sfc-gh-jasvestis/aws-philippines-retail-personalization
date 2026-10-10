@@ -1,0 +1,142 @@
+{
+  "title": "Philippines Retail Loyalty Personalization",
+  "duration": "6 minutes",
+  "thesis": "Snowflake turns daily activity from aggregate loyalty segments of a fictional Philippine omnichannel retailer into clean-offer and opt-out KPIs, 7-day member opt-out risk scores, ignore rate anomalies and grounded AI answers, all on one governed platform.",
+  "tabs": [
+    {
+      "id": "executive-cockpit",
+      "persona": {
+        "name": "Marisol Dizon",
+        "role": "Head of CRM Personalization (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Clean offer rate, offer issues raised, member opt-outs and offer-attributed sales in PHP for 40 aggregate loyalty segments in Pasig City, Mandaue City, General Santos City, Zamboanga City and Angeles City.",
+        "Every KPI is a numerator over a denominator in a curated dynamic table, so it traces back to segment-day rows; there are no member-level records.",
+        "The issue-type chart shows which offer issues end in opt-outs and which always resolve, such as the two city-wide SMS gateway outages."
+      ],
+      "show": [
+        "KPI cards",
+        "Daily offer issues",
+        "Offer issues by type",
+        "Segment table"
+      ],
+      "call_out": "One governed set of personalization KPIs, traceable to source rows",
+      "transition": {
+        "next_tab": "predictive",
+        "line": "Which segments are about to tune us out?"
+      }
+    },
+    {
+      "id": "predictive",
+      "persona": {
+        "name": "Paolo Villanueva",
+        "role": "CRM Data Analyst (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Snowflake ML classification scores each segment's probability of a member opt-out in the next 7 days, from ignore rate, contact frequency, recent opt-outs, tenure and category affinity.",
+        "The holdout line shows precision and recall on the most recent 14 labelled days, against the base rate.",
+        "Anomaly detection flags ignore rate outliers per segment, and the forecast projects program-wide offer issues for 14 days."
+      ],
+      "show": [
+        "Holdout metrics",
+        "Risk by segment",
+        "Offer-issue forecast",
+        "Ignore rate anomalies"
+      ],
+      "call_out": "Honest, evaluated ML inside the data platform",
+      "transition": {
+        "next_tab": "planning",
+        "line": "Are our offer controls keeping up?"
+      }
+    },
+    {
+      "id": "planning",
+      "persona": {
+        "name": "Marisol Dizon",
+        "role": "Head of CRM Personalization (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Offer refresh compliance, consent record coverage and pending consent batches frame the control gaps.",
+        "Creative refresh compliance against member opt-outs by segment shows where stale creative and opt-outs move together; it is an association, not proof of cause.",
+        "The action memo drafts three prioritised actions from the KPI, segment, issue-type and risk tables only."
+      ],
+      "show": [
+        "Offer refresh compliance and consent coverage",
+        "Creative refresh compliance vs member opt-outs",
+        "Action memo"
+      ],
+      "call_out": "Grounded draft actions, with a human in the loop",
+      "transition": {
+        "next_tab": "live",
+        "line": "What happens when a campaign goes wrong right now?"
+      }
+    },
+    {
+      "id": "live",
+      "persona": {
+        "name": "Paolo Villanueva",
+        "role": "CRM Data Analyst (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Live offer events land in RAW.LIVE_OFFER_EVENTS, from the simulator or from Amazon Data Firehose through Snowpipe.",
+        "The Snowflake alert logs ISSUE events with an SOP hint and the segment's current risk band, then emails the on-call CRM analyst."
+      ],
+      "show": [
+        "Events loaded and lag",
+        "Latest offer events",
+        "Alert log"
+      ],
+      "call_out": "From offer issue to CRM case in one platform",
+      "transition": {
+        "next_tab": "ask-ai",
+        "line": "Now ask the data directly."
+      }
+    },
+    {
+      "id": "ask-ai",
+      "persona": {
+        "name": "Marisol Dizon",
+        "role": "Head of CRM Personalization (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "The Cortex Agent uses Cortex Analyst over the semantic view for metrics, and Cortex Search over 14 synthetic offer-issue handling SOPs.",
+        "Each answer shows the generated SQL and the SOPs it cited."
+      ],
+      "show": [
+        "Ask a sample question",
+        "Generated SQL",
+        "SOP citations"
+      ],
+      "call_out": "Natural-language answers you can audit",
+      "transition": {
+        "next_tab": "architecture",
+        "line": "Here is how it is built."
+      }
+    },
+    {
+      "id": "architecture",
+      "persona": {
+        "name": "Marisol Dizon",
+        "role": "Head of CRM Personalization (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Two builds share one core: Snowflake only, or AWS + Snowflake (Data Firehose, Bedrock, QuickSight and Amazon Q).",
+        "Everything shown is synthetic demo data, rebuilt reproducibly from the repo."
+      ],
+      "show": [
+        "Both architecture diagrams"
+      ],
+      "call_out": "One governed core, with an optional AWS edge",
+      "transition": {
+        "next_tab": "",
+        "line": "Questions?"
+      }
+    }
+  ]
+}

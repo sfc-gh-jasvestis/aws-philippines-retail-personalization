@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "repo": "aws-philippines-retail-personalization",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "PHP",
+  "grains": {
+    "RAW.SEGMENTS": "one row per aggregate loyalty member segment (city and category affinity); no member-level rows",
+    "RAW.SEGMENT_DAILY": "one row per segment per day (90 days)",
+    "RAW.CONSENT_RECORDS": "one row per segment (aggregate consent record counts, snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per segment",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.ISSUE_SUMMARY": "one row per offer issue type",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.OPTOUT_RISK_SCORES": "one row per segment (latest day)"
+  },
+  "metrics": {
+    "Clean Offer Rate": "100 * (SUM(OFFER_COUNT) - SUM(ISSUE_COUNT)) / SUM(OFFER_COUNT)",
+    "Offer Issues Raised": "SUM(ISSUE_COUNT)",
+    "Member Opt-outs": "SUM(OPTOUT_COUNT)",
+    "Issue Opt-out Rate": "100 * SUM(OPTOUT_COUNT) / SUM(ISSUE_COUNT)",
+    "Spam Reports": "SUM(SPAM_REPORT)",
+    "Attributed Sales (PHP M)": "SUM(SALES_PHP) / 1e6",
+    "Offers Sent": "SUM(OFFER_COUNT)",
+    "Offer Refresh Compliance": "100 * SUM(REFRESH_DONE) / SUM(REFRESH_DUE)",
+    "Segments Monitored": "COUNT(RAW.SEGMENTS)",
+    "Consent Record Coverage": "100 * SUM(LEAST(ON_FILE_QTY, REQUIRED_QTY)) / SUM(REQUIRED_QTY)",
+    "Consent Records Pending": "SUM(PENDING_QTY)"
+  },
+  "chart_bindings": {
+    "daily_offer_issues": [
+      "CURATED.TREND_ANALYSIS.METRIC_DATE",
+      "ISSUE_COUNT",
+      "OPTOUT_COUNT"
+    ],
+    "issues_by_type": [
+      "CURATED.ISSUE_SUMMARY.ISSUE_TYPE",
+      "ISSUE_COUNT",
+      "OPTOUT_COUNT"
+    ],
+    "refresh_vs_optouts": [
+      "CURATED.PERFORMANCE_SUMMARY.REFRESH_PCT",
+      "OPTOUT_COUNT"
+    ],
+    "quicksight_optout_risk": [
+      "ENTITY_ID",
+      "MAX(OPTOUT_PROB_7D)"
+    ]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "forecast_and_anomaly": "14-day program-wide offer-issue FORECAST; ignore rate ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.ISSUE_SOP_SEARCH over synthetic offer-issue handling SOPs (one per category affinity and issue type)",
+    "semantic_analytics": "Semantic view APP.PERSONALIZATION_ANALYTICS and Cortex Agent APP.PERSONALIZATION_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and SOP citations; the action memo uses only KPI, segment, issue-type and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (segments, daily offer issues, member opt-outs by segment, member opt-out risk, offer events loaded) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "Amazon Data Firehose -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_OFFER_EVENTS",
+    "notifications": "APP.LIVE_OFFER_ALERT logs new ISSUE events to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.PH_RETAIL_PERSONALIZATION_APP; routes /api/data, /api/ask, /api/agent",
+    "optout_risk_model": "Snowflake ML CLASSIFICATION of P(member opt-out for the segment in the next 7 days), evaluated on an out-of-time holdout"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "PHILIPPINES_RETAIL_PERSONALIZATION_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)",
+      "live_offer_events": "APP.SIMULATE_OFFER_EVENTS(n)"
+    },
+    "aws": {
+      "database": "PHILIPPINES_RETAIL_PERSONALIZATION_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities",
+      "live_offer_events": "Amazon Data Firehose -> S3 -> Snowpipe"
+    }
+  }
+}
